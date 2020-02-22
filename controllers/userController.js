@@ -1,19 +1,19 @@
 let users = [
     {
+        name: 'Vasya',
         id: 1,
-        name: 'Vasya'
     },
     {
+        name: 'Kolya',
         id: 2,
-        name: 'Kolya'
     },
     {
+        name: 'Petya',
         id: 3,
-        name: 'Petya'
     },
     {
+        name: 'HerPojmiKto',
         id: 4,
-        name: 'HerPojmiKto'
     }
 ]
 
@@ -27,8 +27,11 @@ function getAllUsers(req, res) {
 }
 
 function getUserById(req, res) {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     const user = users.find((user) => user.id == id);
+    if(!user) {
+        return res.sendStatus(404)
+    }
     res.send(user);
 }
 
@@ -39,14 +42,21 @@ function createUser(req, res) {
 }
 
 function updateUser(req, res) {
-    console.log(req.headers.authorization)
-    res.send('put user');
+    const id = parseInt(req.params.id);
+    const body = req.body;
+    users = users.map((item) => {
+        if(item.id === id) {
+            return {...item, ...body}
+        }
+        return item
+    })
+    res.send(body);
 }
 
 function deleteUser(req, res) {
     const id = parseInt(req.params.id);
-    users = users.filter((item) => item.id === id);
-    res.send(id);
+    users = users.filter((item) => item.id !== id);
+    res.send('' + id);
 }
 
 //CRUD

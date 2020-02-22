@@ -19,3 +19,5 @@ nodemon
 Качаем и устанавливаем Постман, чтоб тестировать запросы
 https://www.postman.com/downloads/
 
+Валидатор
+https://www.npmjs.com/package/yup
