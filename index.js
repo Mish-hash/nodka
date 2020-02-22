@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use();
+
 app.get('/',  (req, res) => {
   res.send('TEst');
 });
@@ -17,7 +19,9 @@ app.get('/user/:id', (req, res) => {
 })
 
 app.post('/user', (req, res) => {
-  res.send('post user');
+  const body = req.body;
+  console.log(body);
+  res.send(body);
 })
 
 app.put('/user', (req, res) => {
