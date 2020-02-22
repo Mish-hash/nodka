@@ -1,7 +1,9 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 
-app.use();
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 app.get('/',  (req, res) => {
   res.send('TEst');
