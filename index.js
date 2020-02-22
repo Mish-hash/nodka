@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true})); //parse body
 app.use(express.json());
 
 app.get('/',  (req, res) => {
@@ -27,6 +27,7 @@ app.post('/user', (req, res) => {
 })
 
 app.put('/user', (req, res) => {
+  console.log(req.headers.authorization)
   res.send('put user');
 })
 
