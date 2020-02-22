@@ -1,18 +1,40 @@
+let users = [
+    {
+        id: 1,
+        name: 'Vasya'
+    },
+    {
+        id: 2,
+        name: 'Kolya'
+    },
+    {
+        id: 3,
+        name: 'Petya'
+    },
+    {
+        id: 4,
+        name: 'HerPojmiKto'
+    }
+]
+
 
 function getAllUsers(req, res) {
-    const query = req.query;
-    console.log(query);
-    res.send(query);
+    const {fieldName, value} = req.query;
+   
+    const filteredUsers = users.filter((item) => item[fieldName] === value );
+
+    res.send(filteredUsers);
 }
 
 function getUserById(req, res) {
     const id = req.params.id;
-    res.send(`get ${id} user`);
+    const user = users.find((user) => user.id == id);
+    res.send(user);
 }
 
 function createUser(req, res) {
     const body = req.body;
-    console.log(body);
+    users.push(body);
     res.send(body);
 }
 
@@ -22,7 +44,9 @@ function updateUser(req, res) {
 }
 
 function deleteUser(req, res) {
-    res.send('delete user');
+    const id = parseInt(req.params.id);
+    users = users.filter((item) => item.id === id);
+    res.send(id);
 }
 
 //CRUD
