@@ -21,3 +21,12 @@ https://www.postman.com/downloads/
 
 Валидатор
 https://www.npmjs.com/package/yup
+
+https://www.npmjs.com/package/bcrypt --- библиотека хеширования паролей
+
+npm run server - запуск сервера
+"scripts": {
+    "server": "nodemon/index.js"
+} --- добавляем сервер нода    
+
+npm i mongoose --- устанавливаем библиотеку мангуст, для работы с БД
