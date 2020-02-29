@@ -1,5 +1,7 @@
 const User = require('../models/User.model');
 const {COACH, STUDENT} = require('../utils/constants');
+const bcrypt = require('bcrypt');
+
 
 let users = [
     {
@@ -54,22 +56,47 @@ function createUser(req, res) {
         .catch(err => res.status(400).send(err))
 }
 
-function updateUser(req, res) {
-    const id = parseInt(req.params.id);
+async function updateUser(req, res, next) {
+    const id = req.params.id;
     const body = req.body;
-    users = users.map((item) => {
-        if(item.id === id) {
-            return {...item, ...body}
-        }
-        return item
-    })
-    res.send(body);
+    try {
+        const updatedUser = await User.updateOne({_id: id}, body, {runValidators: true});
+        res.send(updatedUser);
+    } catch (e) {
+        next(e);
+    }
 }
 
-function deleteUser(req, res) {
-    const id = parseInt(req.params.id);
-    users = users.filter((item) => item.id !== id);
-    res.send('' + id);
+async function deleteUser(req, res, next) {
+    const id = req.params.id;
+    try {
+        const {deletedCount} = await User.deleteOne({_id: id});
+        if (deletedCount <= 0) {
+            return next(new Error('Operation not success'));
+        }
+        res.send(id);
+    } catch (e) {
+        next(e);
+    }
+}
+
+async function login(req, res, next) {
+    const email = req.body.email;
+    const passwordToCompare = req.body.password;
+    try {
+        const user = await User.findOne({email}).select('+password');
+        if(!user) {
+            return next(new Error('Email or password is valid'));
+        }
+        const isPasswordValid = await bcrypt.compare(passwordToCompare, user.password);
+        if(isPasswordValid) {
+            delete user.password;
+            return res.send(user);
+        }
+        next(new Error('Email or password is valid'));
+    } catch (e) {
+        next(e);
+    }
 }
 
 //CRUD
@@ -80,4 +107,5 @@ module.exports = {
     createUser,
     updateUser,
     deleteUser,
+    login,
 }

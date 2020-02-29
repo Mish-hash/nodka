@@ -17,9 +17,16 @@ const createUserBodyScheme = yup.object().shape({
     birthDate: yup.date('Should be date type').required(),
 });
 
+const logginBodyScheme = yup.object().shape({
+    email: yup.string().required().email('Invalid email address'),
+    password: yup.string().required().min(6, 'password should be min lenght 6')
+        .matches(PASSWORD_REG, 'password cannot contain spaces')
+});
+
 module.exports = {
     paramsScheme,
     createUserBodyScheme,
+    logginBodyScheme,
 };
 
 

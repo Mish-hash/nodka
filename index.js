@@ -9,7 +9,9 @@ app.use(express.urlencoded({extended: true})); //parse body
 app.use(express.json());
 app.use(router);
 
-
+app.use((err, req, res, next) => {
+  res.status(500).send('Error from error handler');
+})
 
 app.listen(PORT, () => {
   console.log('Example app listening on port ' + PORT);
