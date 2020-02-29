@@ -59,6 +59,9 @@ function createUser(req, res) {
 async function updateUser(req, res, next) {
     const id = req.params.id;
     const body = req.body;
+    delete req.body.password;
+    delete req.body.email;
+    delete req.body.phone;
     try {
         const updatedUser = await User.updateOne({_id: id}, body, {runValidators: true});
         res.send(updatedUser);
