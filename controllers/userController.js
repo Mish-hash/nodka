@@ -1,3 +1,6 @@
+const User = require('../models/User.model');
+const {COACH, STUDENT} = require('../utils/constants');
+
 let users = [
     {
         name: 'Vasya',
@@ -18,27 +21,37 @@ let users = [
 ]
 
 
-function getAllUsers(req, res) {
-    const {fieldName, value} = req.query;
-   
-    const filteredUsers = users.filter((item) => item[fieldName] === value );
-
-    res.send(filteredUsers);
+async function getAllUsers(req, res) {
+    /* User.find()
+        .select('-__v +password')
+        .then(users => res.send(users)) */
+    try {
+        const users = await User.find().select('-__v +password');
+        res.send(users);
+    } catch (e) {
+        res.status(400).send(e)
+    }
 }
 
 function getUserById(req, res) {
-    const id = parseInt(req.params.id);
-    const user = users.find((user) => user.id == id);
-    if(!user) {
-        return res.sendStatus(404)
-    }
-    res.send(user);
+    const id = req.params.id;
+    User.findOne({_id: id})
+        .then(user => {
+            if(user) {
+                return res.send(user);
+            }
+            res.status(404).send('User not found');
+        })
+        .catch(err => res.status(400).send(err))
 }
 
 function createUser(req, res) {
     const body = req.body;
-    users.push(body);
-    res.send(body);
+    const userModel = new User(body);
+    userModel
+        .save()
+        .then(savedUser => res.send(savedUser))
+        .catch(err => res.status(400).send(err))
 }
 
 function updateUser(req, res) {
