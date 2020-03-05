@@ -2,7 +2,7 @@ const express = require('express');
 const router = require('./routes/index');
 require('./dbConnection');
 
-const PORT = 8080
+const PORT = 8090
 const app = express();
 
 app.use(express.urlencoded({extended: true})); //parse body

@@ -1,7 +1,6 @@
 {
   "name": "nodka",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,5 +23,8 @@
     "mongoose": "^5.9.2",
     "nodemon": "^2.0.2",
     "yup": "^0.28.1"
-  }
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "description": ""
 }
