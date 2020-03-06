@@ -89,14 +89,14 @@ async function login(req, res, next) {
     try {
         const user = await User.findOne({email}).select('+password');
         if(!user) {
-            return next(new Error('Email or password is valid'));
+            return next(new Error('Email or password is invalid'));
         }
         const isPasswordValid = await bcrypt.compare(passwordToCompare, user.password);
         if(isPasswordValid) {
             delete user.password;
             return res.send(user);
         }
-        next(new Error('Email or password is valid'));
+        next(new Error('Email or password is invalid'));
     } catch (e) {
         next(e);
     }
