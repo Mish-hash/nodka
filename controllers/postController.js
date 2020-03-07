@@ -12,11 +12,12 @@ async function createPost(req, res, next) {
 }
 
 async function getAllPosts(req, res, next) {
-    const {page, itemsPerPage} = req.query;
+    const page = parseInt(req.query.page);
+    const itemsPerPage = parseInt(req.query.itemsPerPage)
     const offset = itemsPerPage * (page - 1);
 
     try {
-        const posts = await Post.find().offset(offset).limit(itemsPerPage);
+        const posts = await Post.find().skip(offset).limit(itemsPerPage);
         res.send(posts);
     } catch (e) {
         next(e);
