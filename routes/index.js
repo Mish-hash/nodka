@@ -4,6 +4,7 @@ const postController = require('../controllers/postController');
 const {validateParams, validateBody} = require('../middlewares/validators');
 const {paramsScheme, createUserBodyScheme, logginBodyScheme} = require('../yupSchemes/yupSchemes')
 const {hashPassword} = require('../middlewares/hashPassword');
+const {checkJwt} = require('../middlewares/jwtMiddleware');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.delete('/user/:id', validateParams(paramsScheme), userController.deleteUs
 
 router.post('/login', validateBody(logginBodyScheme), userController.login);
 
-router.post('/post', postController.createPost);
-router.get('/post', postController.getAllPosts);
+router.post('/post', checkJwt, postController.createPost);
+router.get('/post', checkJwt, postController.getAllPosts);
 
 module.exports = router;

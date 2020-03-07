@@ -1,6 +1,7 @@
 const User = require('../models/User.model');
 const {COACH, STUDENT} = require('../utils/constants');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 let users = [
@@ -28,7 +29,7 @@ async function getAllUsers(req, res) {
         .select('-__v +password')
         .then(users => res.send(users)) */
     try {
-        const users = await User.find().select('-__v +password');
+        const users = await User.find().populate('posts').select('-__v +password');
         res.send(users);
     } catch (e) {
         res.status(400).send(e)
@@ -94,7 +95,8 @@ async function login(req, res, next) {
         const isPasswordValid = await bcrypt.compare(passwordToCompare, user.password);
         if(isPasswordValid) {
             delete user.password;
-            return res.send(user);
+            const token = await jwt.sign({id: user._id}, 'my secret key', {expiresIn: '1h'});
+            return res.send({user, token});
         }
         next(new Error('Email or password is invalid'));
     } catch (e) {
