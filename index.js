@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.urlencoded({extended: true})); //parse body
 app.use(express.json());
-app.use(router);
+app.use('/api', router);
 
 app.use((err, req, res, next) => handlingErr(err, res))
 
