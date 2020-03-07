@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const postController = require('../controllers/postController');
 const {validateParams, validateBody} = require('../middlewares/validators');
 const {paramsScheme, createUserBodyScheme, logginBodyScheme} = require('../yupSchemes/yupSchemes')
 const {hashPassword} = require('../middlewares/hashPassword');
@@ -13,5 +14,8 @@ router.put('/user/:id', validateParams(paramsScheme), userController.updateUser)
 router.delete('/user/:id', validateParams(paramsScheme), userController.deleteUser);
 
 router.post('/login', validateBody(logginBodyScheme), userController.login);
+
+router.post('/post', postController.createPost);
+router.get('/post', postController.getAllPosts);
 
 module.exports = router;

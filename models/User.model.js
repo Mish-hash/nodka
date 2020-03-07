@@ -38,8 +38,12 @@ const userScheme = new mongoose.Schema({
         type: Date,
         required: false,
     },
+    posts: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Post',
+    }
 });
 
-const User = mongoose.model('user', userScheme);
+const User = mongoose.model('User', userScheme);
 
 module.exports = User;
